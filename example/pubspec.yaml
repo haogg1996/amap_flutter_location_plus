@@ -13,7 +13,7 @@ dependencies:
     sdk: flutter
   permission_handler: ^6.1.3
 
-  amap_flutter_location:
+  amap_flutter_location_plus:
     # When depending on this package from a real application you should use:
     #   amap_flutter_location: ^x.y.z
     # See https://dart.dev/tools/pub/dependencies#version-constraints

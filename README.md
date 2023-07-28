@@ -1,6 +1,6 @@
 ##  前述 
 
-1. 高德定位Flutter插件
+1. 高德定位Flutter插件 plus 版本（基于官方版本，实现官方未实现的功能）
 2. 登录[高德开放平台官网](https://lbs.amap.com/api/)分别申请[Android端](https://lbs.amap.com/api/android-location-sdk/guide/create-project/get-key/)和[iOS端](https://lbs.amap.com/api/ios-location-sdk/guide/create-project/get-key)的key
 3. 如需了解高德定位SDK的相关功能，请参阅[Android定位SDK开发指南](https://lbs.amap.com/api/android-location-sdk/locationsummary/)和[iOS定位SDK开发指南](https://lbs.amap.com/api/ios-location-sdk/summary/)
 

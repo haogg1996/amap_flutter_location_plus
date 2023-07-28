@@ -1,6 +1,6 @@
-name: amap_flutter_location
-description: 高德定位SDK Flutter插件
-version: 3.0.0
+name: amap_flutter_location_plus
+description: 高德定位SDK Flutter插件 plus 版本
+version: 3.0.0+1
 homepage: https://lbs.amap.com/
 
 environment:
