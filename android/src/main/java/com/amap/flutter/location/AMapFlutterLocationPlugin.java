@@ -200,7 +200,12 @@ public class AMapFlutterLocationPlugin implements FlutterPlugin, MethodCallHandl
       AMapLocationClientImpl locationClientImp = new AMapLocationClientImpl(mContext, pluginKey, mEventSink);
       locationClientMap.put(pluginKey, locationClientImp);
     }
-    return locationClientMap.get(pluginKey);
+
+    AMapLocationClientImpl locationClientImp = locationClientMap.get(pluginKey);
+    if (locationClientImp != null && locationClientImp.getEventSink() == null) {
+      locationClientImp.setEventSink(mEventSink);
+    }
+    return locationClientImp;
   }
 
   private String getPluginKeyFromArgs(Map argsMap) {

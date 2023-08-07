@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:amap_flutter_location_example/AMapGetCurrentLocation.dart';
+import 'package:amap_flutter_location_example/location.dart';
 import 'package:flutter/material.dart';
-import 'package:amap_flutter_location/amap_flutter_location.dart';
-import 'package:amap_flutter_location/amap_location_option.dart';
+import 'package:amap_flutter_location_plus/amap_flutter_location.dart';
+import 'package:amap_flutter_location_plus/amap_location_option.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 void main() {
@@ -15,56 +17,60 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  Map<String, Object>? _locationResult;
+  Map<String, dynamic>? _locationResult;
 
   StreamSubscription<Map<String, Object>>? _locationListener;
 
-  AMapFlutterLocation _locationPlugin = new AMapFlutterLocation();
+  AMapFlutterLocation? _locationPlugin = null; // new AMapFlutterLocation();
 
   @override
   void initState() {
     super.initState();
-    /// 设置是否已经包含高德隐私政策并弹窗展示显示用户查看，如果未包含或者没有弹窗展示，高德定位SDK将不会工作
-    ///
-    /// 高德SDK合规使用方案请参考官网地址：https://lbs.amap.com/news/sdkhgsy
-    /// <b>必须保证在调用定位功能之前调用， 建议首次启动App时弹出《隐私政策》并取得用户同意</b>
-    ///
-    /// 高德SDK合规使用方案请参考官网地址：https://lbs.amap.com/news/sdkhgsy
-    ///
-    /// [hasContains] 隐私声明中是否包含高德隐私政策说明
-    ///
-    /// [hasShow] 隐私权政策是否弹窗展示告知用户
-    AMapFlutterLocation.updatePrivacyShow(true, true);
 
-    /// 设置是否已经取得用户同意，如果未取得用户同意，高德定位SDK将不会工作
-    ///
-    /// 高德SDK合规使用方案请参考官网地址：https://lbs.amap.com/news/sdkhgsy
-    ///
-    /// <b>必须保证在调用定位功能之前调用, 建议首次启动App时弹出《隐私政策》并取得用户同意</b>
-    ///
-    /// [hasAgree] 隐私权政策是否已经取得用户同意
-    AMapFlutterLocation.updatePrivacyAgree(true);
+    // /// 设置是否已经包含高德隐私政策并弹窗展示显示用户查看，如果未包含或者没有弹窗展示，高德定位SDK将不会工作
+    // ///
+    // /// 高德SDK合规使用方案请参考官网地址：https://lbs.amap.com/news/sdkhgsy
+    // /// <b>必须保证在调用定位功能之前调用， 建议首次启动App时弹出《隐私政策》并取得用户同意</b>
+    // ///
+    // /// 高德SDK合规使用方案请参考官网地址：https://lbs.amap.com/news/sdkhgsy
+    // ///
+    // /// [hasContains] 隐私声明中是否包含高德隐私政策说明
+    // ///
+    // /// [hasShow] 隐私权政策是否弹窗展示告知用户
+    // AMapFlutterLocation.updatePrivacyShow(true, true);
 
-    /// 动态申请定位权限
-    requestPermission();
+    // /// 设置是否已经取得用户同意，如果未取得用户同意，高德定位SDK将不会工作
+    // ///
+    // /// 高德SDK合规使用方案请参考官网地址：https://lbs.amap.com/news/sdkhgsy
+    // ///
+    // /// <b>必须保证在调用定位功能之前调用, 建议首次启动App时弹出《隐私政策》并取得用户同意</b>
+    // ///
+    // /// [hasAgree] 隐私权政策是否已经取得用户同意
+    // AMapFlutterLocation.updatePrivacyAgree(true);
 
-    ///设置Android和iOS的apiKey<br>
-    ///key的申请请参考高德开放平台官网说明<br>
-    ///Android: https://lbs.amap.com/api/android-location-sdk/guide/create-project/get-key
-    ///iOS: https://lbs.amap.com/api/ios-location-sdk/guide/create-project/get-key
-    AMapFlutterLocation.setApiKey("1dbf56e2e8a4d0e4cdc2df9efd36bc71", "dfb64c0463cb53927914364b5c09aba0");
+    // /// 动态申请定位权限
+    // requestPermission();
 
-    ///iOS 获取native精度类型
-    if (Platform.isIOS) {
-      requestAccuracyAuthorization();
-    }
+    // ///设置Android和iOS的apiKey<br>
+    // ///key的申请请参考高德开放平台官网说明<br>
+    // ///Android: https://lbs.amap.com/api/android-location-sdk/guide/create-project/get-key
+    // ///iOS: https://lbs.amap.com/api/ios-location-sdk/guide/create-project/get-key
+    // AMapFlutterLocation.setApiKey(
+    //     "1dbf56e2e8a4d0e4cdc2df9efd36bc71", "dfb64c0463cb53927914364b5c09aba0");
+
+    // ///iOS 获取native精度类型
+    // if (Platform.isIOS) {
+    //   requestAccuracyAuthorization();
+    // }
 
     ///注册定位结果监听
-    _locationListener = _locationPlugin.onLocationChanged().listen((Map<String, Object> result) {
-      setState(() {
-        _locationResult = result;
-      });
-    });
+    // _locationListener = _locationPlugin
+    //     ?.onLocationChanged()
+    //     .listen((Map<String, Object> result) {
+    //   setState(() {
+    //     _locationResult = result;
+    //   });
+    // });
   }
 
   @override
@@ -77,7 +83,7 @@ class _MyAppState extends State<MyApp> {
     }
 
     ///销毁定位
-    _locationPlugin.destroy();
+    _locationPlugin?.destroy();
   }
 
   ///设置定位参数
@@ -93,7 +99,8 @@ class _MyAppState extends State<MyApp> {
     ///逆地理信息的语言类型
     locationOption.geoLanguage = GeoLanguage.DEFAULT;
 
-    locationOption.desiredLocationAccuracyAuthorizationMode = AMapLocationAccuracyAuthorizationMode.ReduceAccuracy;
+    locationOption.desiredLocationAccuracyAuthorizationMode =
+        AMapLocationAccuracyAuthorizationMode.ReduceAccuracy;
 
     locationOption.fullAccuracyPurposeKey = "AMapLocationScene";
 
@@ -123,19 +130,25 @@ class _MyAppState extends State<MyApp> {
     locationOption.pausesLocationUpdatesAutomatically = false;
 
     ///将定位参数设置给定位插件
-    _locationPlugin.setLocationOption(locationOption);
+    _locationPlugin?.setLocationOption(locationOption);
   }
 
   ///开始定位
-  void _startLocation() {
+  void _startLocation() async {
     ///开始定位之前设置定位参数
-    _setLocationOption();
-    _locationPlugin.startLocation();
+    // _setLocationOption();
+    // _locationPlugin.startLocation();
+    Location? location = await AMapGetCurrentLocation().getOnceLocation();
+    if (location != null) {
+      setState(() {
+        _locationResult = location.toJson();
+      });
+    }
   }
 
   ///停止定位
   void _stopLocation() {
-    _locationPlugin.stopLocation();
+    _locationPlugin?.stopLocation();
   }
 
   Container _createButtonContainer() {
@@ -210,10 +223,13 @@ class _MyAppState extends State<MyApp> {
 
   ///获取iOS native的accuracyAuthorization类型
   void requestAccuracyAuthorization() async {
-    AMapAccuracyAuthorization currentAccuracyAuthorization = await _locationPlugin.getSystemAccuracyAuthorization();
-    if (currentAccuracyAuthorization == AMapAccuracyAuthorization.AMapAccuracyAuthorizationFullAccuracy) {
+    AMapAccuracyAuthorization? currentAccuracyAuthorization =
+        await _locationPlugin?.getSystemAccuracyAuthorization();
+    if (currentAccuracyAuthorization ==
+        AMapAccuracyAuthorization.AMapAccuracyAuthorizationFullAccuracy) {
       print("精确定位类型");
-    } else if (currentAccuracyAuthorization == AMapAccuracyAuthorization.AMapAccuracyAuthorizationReducedAccuracy) {
+    } else if (currentAccuracyAuthorization ==
+        AMapAccuracyAuthorization.AMapAccuracyAuthorizationReducedAccuracy) {
       print("模糊定位类型");
     } else {
       print("未知定位类型");
