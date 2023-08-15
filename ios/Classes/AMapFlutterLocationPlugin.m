@@ -103,6 +103,10 @@
         AMapFlutterLocationManager *manager = [self locManagerWithCall:call];
         CLAccuracyAuthorization curacyAuthorization = [manager currentAuthorization];
         result(@(curacyAuthorization));
+    } else {
+        if (result) {
+            result(@(0));//如果不是iOS14,则定位精度权限默认为高精度
+        }
     }
 #else
     if (result) {
